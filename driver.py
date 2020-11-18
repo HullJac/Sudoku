@@ -47,11 +47,12 @@ def BTS(csp, revision):
             ###display(tempCSP)
             ###print("---------------------------")
         elif revision == 'ac-3':
-            ###display(tempCSP)
-            ###print('')
+            display(tempCSP)
+            print('')
             AC_3(tempCSP)
-            ###display(tempCSP)
-            ###print("---------------------------")
+            print('after')
+            display(tempCSP)
+            print("---------------------------")
         else:
             print("That is not a supported method: " + revision)
             print("Try again using either 'ac-3' or 'forward_check'")
@@ -81,8 +82,8 @@ def collisionTest(csp,val):
 
 
 def DomainsComplete(csp):
-    for i in range(4):
-        for j in range(4):
+    for i in range(len(variable_matrix)):
+        for j in range(len(variable_matrix)):
             key=variable_matrix[i][j]
             domain=csp[key][0]
             if len(domain)>1:
@@ -96,19 +97,19 @@ def generate_domain(board):
     temp2=[]
     for i in temp:
         temp2.append(int(i))
-    for i in range(4):
-        for j in range(4):
+    for i in range(len(variable_matrix)):
+        for j in range(len(variable_matrix)):
             domain[i].append([temp2[4*i+j]])
-    for i in range(4):
-        for j in range(4):
+    for i in range(len(variable_matrix)):
+        for j in range(len(variable_matrix)):
             if domain[i][j][0]==0:
                 domain[i][j]=[1,2,3,4]
     return domain
         
 
 def forwardCheck(csp):
-    for i in range(4):
-        for j in range(4):
+    for i in range(len(variable_matrix)):
+        for j in range(len(variable_matrix)):
             key=variable_matrix[i][j]
             domainDi=csp[key][0]
             if len(domainDi)!=1:
@@ -124,8 +125,8 @@ def forwardCheck(csp):
 
 def doneQ(csp):
     total=0
-    for i in range(4):
-        for j in range(4):
+    for i in range(len(variable_matrix)):
+        for j in range(len(variable_matrix)):
             tmp=variable_matrix[i][j][0]
             if len(csp[variable_matrix[i][j]][0])==1:
                 total=total+1
@@ -136,8 +137,8 @@ def doneQ(csp):
 
 def totalColTest(csp):
     collisions=0
-    for i in range(4):
-        for j in range(4):
+    for i in range(len(variable_matrix)):
+        for j in range(len(variable_matrix)):
             val=variable_matrix[i][j]
             if collisionTest(csp,val):
                 return True
@@ -191,8 +192,8 @@ def isConsistent(csp, domain, arc):
 def MRV(csp):
     mrv=1000
     minkey=''
-    for i in range(4):
-        for j in range(4):
+    for i in range(len(variable_matrix)):
+        for j in range(len(variable_matrix)):
             key=variable_matrix[i][j]
             domain=csp[key][0]
             d1=len(domain)
@@ -207,9 +208,9 @@ def MRV(csp):
 
 
 def display(csp):
-    for i in range(4):
+    for i in range(len(variable_matrix)):
         line=[]
-        for j in range(4):
+        for j in range(len(variable_matrix)):
             key=variable_matrix[i][j]
             domainDi=csp[key][0]
             line.append(domainDi)
@@ -217,11 +218,12 @@ def display(csp):
 
 
 def main():
-    sys.argv=[sys.argv[0],'0403002000013000']
+    sys.argv=[sys.argv[0], '0430001001000340']
+            #'0403002000013000']
     csp={}
     domain=generate_domain(sys.argv[1])
-    for i in range(4):
-        for j in range(4):
+    for i in range(len(variable_matrix)):
+        for j in range(len(variable_matrix)):
             csp.update({variable_matrix[i][j]:[domain[i][j],constraints[i][j]]})
             #print(variable_matrix[i][j]+"  "+str(csp[variable_matrix[i][j]][0])+" "+str(csp[variable_matrix[i][j]][1]))
     solution=BTS_search(csp, 'ac-3')

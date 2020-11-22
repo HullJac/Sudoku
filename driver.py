@@ -1,14 +1,16 @@
 """
 Program:        Sudoku Solver using Forward Checking, AC-3, and Backtracking Search
 Programmer:     Jacob Hull
-Date:           11/XX/2020
+Date:           11/23/2020
 
 Description:    This program is a command line run program using python3.
-                You feed the program a txt file containting the puzzle or puzzles on separate lines.
-                The puzzles should be all in one line starting with the top row of the puzzle, 
-                then then second and so on.
-                The program then outputs a txt file containing the finised puzzle or puzzles using
-                two different methods. (Forward Checking and AC-3)
+                     You feed the program a puzzle containting the puzzle or puzzles on separate lines.
+                     The puzzles should be all in one line starting with the top row of the puzzle, 
+                    then then second and so on.
+                The program then outputs a txt file named output.txt containing
+                the finised puzzle or puzzles usingtwo different methods.
+                (Forward Checking and AC-3)
+
 """
 import queue
 import sys
@@ -76,6 +78,7 @@ matrix = copy.deepcopy(variable_matrix)
 spot = 0
 num = 1
 spotReset = 0
+# fills the squares
 for i in range(puzzleSize):
     for j in range(puzzleSize): #9
         boxes[spot].append(alphaList[j] + str(num))
@@ -168,7 +171,7 @@ def generate_domain(board):
         temp2.append(int(i))
     for i in range(puzzleSize):
         for j in range(puzzleSize):
-            domain[i].append([temp2[9*i+j]]) # 9 was 4
+            domain[i].append([temp2[9*i+j]])
     for i in range(puzzleSize):
         for j in range(puzzleSize):
             if domain[i][j][0]==0:
@@ -216,7 +219,6 @@ def totalColTest(csp):
 
 def AC_3(csp):
     q = queue.Queue()
-    # these numbers change for size of puzzle
     # add all the possible arcs to the queue
     for row in range(puzzleSize):
         for spot in range(puzzleSize):
@@ -242,7 +244,7 @@ def AC_3(csp):
 
 def revise(csp, arc):
     revised = False
-    # goes throuhg each item in the domain of the Xi (arc[0])
+    # goes through each item in the domain of the Xi (arc[0])
     for domain in csp[arc[0]][0]:
         if not isConsistent(csp, domain, arc):
             csp[arc[0]][0].remove(domain)
@@ -251,7 +253,6 @@ def revise(csp, arc):
 
 
 def isConsistent(csp, domain, arc):
-    # is this the domain or constraints
     for y in csp[arc[1]][0]:
         if arc[1] in csp[arc[0]][1] and y != domain:
             return True
@@ -282,6 +283,7 @@ def display(csp):
         print(str(line))
 
 
+# function that helps to get the final output as a string
 def getFinalPuzzle(csp):
     puz = ''
     for i in range(puzzleSize):
@@ -301,7 +303,9 @@ def main():
         for i in range(puzzleSize):
             for j in range(puzzleSize):
                 csp.update({variable_matrix[i][j]:[domain[i][j],constraints[i][j]]})
+                # line below is used to print out the csp
                 #print(variable_matrix[i][j]+"  "+str(csp[variable_matrix[i][j]][0])+" "+str(csp[variable_matrix[i][j]][1]))
+        # do ac-3 then forward check
         if Type == 0:
             solution=BTS_search(csp, 'ac-3')
         else:
@@ -317,7 +321,6 @@ def main():
                 f.write(finalPuz + " AC3\n")
             else:
                 f.write(finalPuz + " FC")
-
     f.close()
 
 

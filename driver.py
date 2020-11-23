@@ -4,9 +4,9 @@ Programmer:     Jacob Hull
 Date:           11/23/2020
 
 Description:    This program is a command line run program using python3.
-                     You feed the program a puzzle containting the puzzle or puzzles on separate lines.
-                     The puzzles should be all in one line starting with the top row of the puzzle, 
-                    then then second and so on.
+                You feed the program a puzzle on the command line.
+                The puzzles should be all in one line starting with the top row of the puzzle, 
+                then then second and so on.
                 The program then outputs a txt file named output.txt containing
                 the finised puzzle or puzzles usingtwo different methods.
                 (Forward Checking and AC-3)
